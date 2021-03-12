@@ -1,0 +1,3 @@
+include README.md LICENSE DEVELOPMENT CONTRIBUTORS
+recursive-include uzireader *.py
+recursive-include test *.py
