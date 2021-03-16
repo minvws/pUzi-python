@@ -1,6 +1,8 @@
 ![pUZI logo](pUZI.svg "pUZI logo")
 # pUZI python
 
+[![Python application](https://github.com/minvws/pUzi-python/actions/workflows/python.yaml/badge.svg)](https://github.com/minvws/pUzi-python/actions/workflows/python.yaml)
+
 Proficient UZI pass reader in python, based on work by Anne Jan: https://github.com/minvws/pUZI-php
 
 The UZI card is part of an authentication mechanism for medical staff and doctors working in the Netherlands. The cards are distributed by the CIBG. More information and the relevant client software can be found at www.uziregister.nl (in Dutch).
