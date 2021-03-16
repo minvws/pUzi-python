@@ -54,9 +54,10 @@ print(uzipas)
 
 1. Fork the Project
 
-2. Ensure you have Black installed
+2. Ensure you have the requirements and Black installed
    
     ```shell
+    pip3 install -r requirements.txt
     pip3 install black
     ```
 
