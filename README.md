@@ -1,4 +1,6 @@
+![pUZI logo](pUZI.svg "pUZI logo")
 # pUZI python
+
 Proficient UZI pass reader in python, based on work by Anne Jan: https://github.com/minvws/pUZI-php
 
 The UZI card is part of an authentication mechanism for medical staff and doctors working in the Netherlands. The cards are distributed by the CIBG. More information and the relevant client software can be found at www.uziregister.nl (in Dutch).
@@ -40,8 +42,8 @@ uzipas = UziPassUser(env['SSL_CLIENT_VERIFY'], env['SSL_CLIENT_CERT'])
 print(uzipas)
 ```
 
-```text
-{'givenName': 'john', 'surName': 'doe-11111111', 'OidCa': '2.16.528.1.1003.1.3.5.5.2', 'UziVersion': '1', 'UziNumber': '11111111', 'CardType': 'N', 'SubscriberNumber': '90000111', 'Role': '01.015', 'AgbCode': '00000000'}
+```json
+{"givenName": "john", "surName": "doe-11111111", "OidCa": "2.16.528.1.1003.1.3.5.5.2", "UziVersion": "1", "UziNumber": "11111111", "CardType": "N", "SubscriberNumber": "90000111", "Role": "01.015", "AgbCode": "00000000"}
 ```
 
 ## Uses
@@ -59,3 +61,5 @@ print(uzipas)
 4. (Recommended) Check whether your code conforms to our Coding Standards by running black on your changed files
 
 5. Send us a Pull Request
+
+![pUZI](pUZI-hidden.svg "pUZI")
