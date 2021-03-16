@@ -54,12 +54,30 @@ print(uzipas)
 
 1. Fork the Project
 
-2. Ensure you have Black installed (pip3 install black)
+2. Ensure you have Black installed
+   
+    ```shell
+    pip3 install black
+    ```
 
 3. Create a Feature Branch
 
-4. (Recommended) Check whether your code conforms to our Coding Standards by running black on your changed files
+4. Run tests
 
-5. Send us a Pull Request
+   ```sh
+   cd tests/certs 
+   ./generate_mock_certs.sh
+   cd -
+   python3 -m unittest
+   ```
+
+
+5. (Recommended) Check whether your code conforms to our Coding Standards by running black on your changed files
+
+    ```sh
+    black .
+    ```
+
+6. Send us a Pull Request
 
 ![pUZI](pUZI-hidden.svg "pUZI")

@@ -5,3 +5,5 @@ dist
 *.egg-info
 .idea
 venv
+tests/certs/dummy.key
+tests/certs/*.cert
