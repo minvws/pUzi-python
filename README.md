@@ -27,11 +27,16 @@ SSLCACertificateFile /path/to/uziCA.crt
 SSLOptions +StdEnvVars +ExportCertData
 ```
 
+## Installation
+```bash
+pip install pUzi
+```
+
 ## Usage
 
 ```python3
-import uzireader
-uzipas = uzireader.UziPassUser(env['SSL_CLIENT_VERIFY'], env['SSL_CLIENT_CERT'])
+from uzireader.uzipassuser import UziPassUser
+uzipas = UziPassUser(env['SSL_CLIENT_VERIFY'], env['SSL_CLIENT_CERT'])
 print(uzipas)
 ```
 

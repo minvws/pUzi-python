@@ -3,8 +3,9 @@ __author__ = "Rafael Dulfer <rafael.dulfer@gmail.com>"
 
 import os
 import unittest
+import uzireader.exceptions as exceptions
+from uzireader.uzipassuser import UziPassUser
 
-import uzireader
 
 class TestUziReader(unittest.TestCase):
     def setUp(self):
@@ -19,20 +20,20 @@ class TestUziReader(unittest.TestCase):
 
     def checkCert(self, path, message=None):
         cert = self.readCert(path)
-        with self.assertRaises(uzireader.UziException, msg=message):
-            uzireader.UziPassUser(self.succ, cert)
+        with self.assertRaises(exceptions.UziException, msg=message):
+            UziPassUser(self.succ, cert)
 
     def test_check_request_has_no_cert(self):
-        with self.assertRaises(uzireader.UziExceptionServerConfigError):
-            uzireader.UziPassUser()
+        with self.assertRaises(exceptions.UziExceptionServerConfigError):
+            UziPassUser()
 
     def test_check_ssl_client_failed(self):
-        with self.assertRaises(uzireader.UziExceptionServerConfigError):
-            uzireader.UziPassUser()
+        with self.assertRaises(exceptions.UziExceptionServerConfigError):
+            UziPassUser()
 
     def test_check_no_client_cert(self):
-        with self.assertRaises(uzireader.UziExceptionClientCertError):
-            uzireader.UziPassUser(self.succ)
+        with self.assertRaises(exceptions.UziExceptionClientCertError):
+            UziPassUser(self.succ)
 
     def test_check_cert_without_valid_data(self):
         self.checkCert("mock-001-no-valid-uzi-data.cert", "No valid UZI data found")
@@ -54,7 +55,7 @@ class TestUziReader(unittest.TestCase):
 
     def test_check_valid_cert(self):
         cert = self.readCert("mock-011-correct.cert")
-        data = uzireader.UziPassUser(self.succ, cert)
+        data = UziPassUser(self.succ, cert)
 
         self.assertEqual("00000000", data["AgbCode"])
         self.assertEqual("N", data["CardType"])
@@ -68,7 +69,7 @@ class TestUziReader(unittest.TestCase):
 
     def test_check_valid_admin_cert(self):
         cert = self.readCert("mock-012-correct-admin.cert")
-        data = uzireader.UziPassUser(self.succ, cert)
+        data = UziPassUser(self.succ, cert)
 
         self.assertEqual("00000000", data["AgbCode"])
         self.assertEqual("N", data["CardType"])
