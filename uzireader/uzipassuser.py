@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 __author__ = "Jan Klopper <jan@underdark.nl>"
-__version__ = '1.1'
+__version__ = "1.1"
 
 from cryptography import x509
 from uzireader.exceptions import (

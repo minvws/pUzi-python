@@ -1,4 +1,6 @@
+![pUZI logo](pUZI.svg "pUZI logo")
 # pUZI python
+
 Proficient UZI pass reader in python, based on work by Anne Jan: https://github.com/minvws/pUZI-php
 
 The UZI card is part of an authentication mechanism for medical staff and doctors working in the Netherlands. The cards are distributed by the CIBG. More information and the relevant client software can be found at www.uziregister.nl (in Dutch).
@@ -40,8 +42,8 @@ uzipas = UziPassUser(env['SSL_CLIENT_VERIFY'], env['SSL_CLIENT_CERT'])
 print(uzipas)
 ```
 
-```text
-{'givenName': 'john', 'surName': 'doe-11111111', 'OidCa': '2.16.528.1.1003.1.3.5.5.2', 'UziVersion': '1', 'UziNumber': '11111111', 'CardType': 'N', 'SubscriberNumber': '90000111', 'Role': '01.015', 'AgbCode': '00000000'}
+```json
+{"givenName": "john", "surName": "doe-11111111", "OidCa": "2.16.528.1.1003.1.3.5.5.2", "UziVersion": "1", "UziNumber": "11111111", "CardType": "N", "SubscriberNumber": "90000111", "Role": "01.015", "AgbCode": "00000000"}
 ```
 
 ## Uses
@@ -52,10 +54,31 @@ print(uzipas)
 
 1. Fork the Project
 
-2. Ensure you have Black installed (pip3 install black)
+2. Ensure you have the requirements and Black installed
+   
+    ```shell
+    pip3 install -r requirements.txt
+    pip3 install black
+    ```
 
 3. Create a Feature Branch
 
-4. (Recommended) Check whether your code conforms to our Coding Standards by running black on your changed files
+4. Run tests
 
-5. Send us a Pull Request
+   ```sh
+   cd tests/certs 
+   ./generate_mock_certs.sh
+   cd -
+   python3 -m unittest
+   ```
+
+
+5. (Recommended) Check whether your code conforms to our Coding Standards by running black on your changed files
+
+    ```sh
+    black .
+    ```
+
+6. Send us a Pull Request
+
+![pUZI](pUZI-hidden.svg "pUZI")
