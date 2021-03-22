@@ -15,6 +15,8 @@ pUZI is available under the EU PL licence. It was created early 2021 during the 
 
 Questions and contributions are welcome via [GitHub](https://github.com/minvws/pUzi-python/issues).
 
+See [www.Uziregister.nl](https://www.uziregister.nl) for the documentation, software and application form for the UZI card.
+
 ## Requirements
 
 * python >= 3.6
