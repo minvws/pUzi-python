@@ -64,7 +64,8 @@ class TestUziReader(unittest.TestCase):
 
     def test_check_cert_without_ia5_string(self):
         self.checkCert(
-            "mock-004-othername-without-ia5string.cert", UziCertificateNotUziException
+            "mock-004-othername-without-ia5string.cert",
+            exception=UziCertificateException,
         )
 
     def test_check_cert_incorrect_san_data(self):
