@@ -1,7 +1,13 @@
 __author__ = "Rafael Dulfer <rafael.dulfer@gmail.com>"
 
 from uzireader.consts import OID_CA_CARE_PROVIDER, OID_CA_NAMED_EMPLOYEE
-from uzireader.exceptions import UziException, UziCaException, UziVersionException, UziAllowedTypeException, UziAllowedRoleException
+from uzireader.exceptions import (
+    UziException,
+    UziCaException,
+    UziVersionException,
+    UziAllowedTypeException,
+    UziAllowedRoleException,
+)
 from uzireader.uzipassuser import UziPassUser
 
 
