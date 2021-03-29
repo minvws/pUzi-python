@@ -5,11 +5,15 @@ class UziException(Exception):
     """Base Exception for all Uzi Exceptions"""
 
 
-class UziExceptionServerConfigError(UziException):
+class UziCertException(UziException):
+    """Generic issue with a provided cert"""
+
+
+class UziExceptionServerConfigError(UziCertException):
     """Your webserver Did not pass the correct env"""
 
 
-class UziExceptionClientCertError(UziException):
+class UziExceptionClientCertError(UziCertException):
     """The client did not present a certificate"""
 
 
@@ -27,3 +31,7 @@ class UziVersionException(UziException):
 
 class UziCaException(UziException):
     """The client CA is invalid"""
+
+
+class UziCertificateNotUziException(UziException):
+    """Provided cert had no uzi data"""
