@@ -7,7 +7,7 @@ from uzireader.exceptions import (
     UziException,
     UziExceptionServerConfigError,
     UziExceptionClientCertError,
-    UziCertException,
+    UziCertificateException,
     UziCertificateNotUziException,
 )
 from uzireader.consts import OID_IA5STRING
@@ -66,7 +66,7 @@ class UziPassUser(dict):
         """Attemps to parse the presented certificate and extract the user info
         from it"""
         if not self.cert.subject:
-            raise UziCertException("No subject rdnSequence")
+            raise UziCertificateException("No subject rdnSequence")
 
         givenName, surName = self._getName(self.cert.subject.rdns)
 
@@ -95,7 +95,7 @@ class UziPassUser(dict):
 
                 data = subjectAltName.split("-")
                 if len(data) < 6:
-                    raise UziCertException("Incorrect SAN found")
+                    raise UziCertificateException("Incorrect SAN found")
                 data[0] = data[0].split("?", 1)[1]
 
                 return {

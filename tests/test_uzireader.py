@@ -8,7 +8,7 @@ from uzireader.exceptions import (
     UziException,
     UziExceptionServerConfigError,
     UziExceptionClientCertError,
-    UziCertException,
+    UziCertificateException,
 )
 from uzireader.uzipassuser import UziPassUser
 
@@ -59,11 +59,11 @@ class TestUziReader(unittest.TestCase):
 
     def test_check_cert_incorrect_san_data(self):
         self.checkCert("mock-005-incorrect-san-data.cert", "Incorrect SAN found",
-            UziCertException)
+            UziCertificateException)
 
     def test_check_cert_incorrect_san_data_2(self):
         self.checkCert("mock-006-incorrect-san-data.cert", "Incorrect SAN found",
-            UziCertException)
+            UziCertificateException)
 
     def test_check_valid_cert(self):
         cert = self.readCert("mock-011-correct.cert")

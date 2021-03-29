@@ -5,15 +5,15 @@ class UziException(Exception):
     """Base Exception for all Uzi Exceptions"""
 
 
-class UziCertException(UziException):
+class UziCertificateException(UziException):
     """Generic issue with a provided cert"""
 
 
-class UziExceptionServerConfigError(UziCertException):
+class UziExceptionServerConfigError(UziCertificateException):
     """Your webserver Did not pass the correct env"""
 
 
-class UziExceptionClientCertError(UziCertException):
+class UziExceptionClientCertError(UziCertificateException):
     """The client did not present a certificate"""
 
 
