@@ -4,7 +4,13 @@ __author__ = "Rafael Dulfer <rafael.dulfer@gmail.com>"
 import unittest
 import os
 
-import uzireader.exceptions as exceptions
+from uzireader.exceptions import (
+    UziException,
+    UziCaException,
+    UziVersionException,
+    UziAllowedTypeException,
+    UziAllowedRoleException,
+)
 from uzireader.uzipassuser import UziPassUser
 from uzireader.uzipassvalidator import UziPassValidator
 from uzireader.consts import UZI_TYPE_CARE_PROVIDER, UZI_ROLE_NURSE, UZI_ROLE_DENTIST
@@ -21,16 +27,16 @@ class TestUziValidator(unittest.TestCase):
         f.close()
         return cert
 
-    def checkUser(self, path, message=None, types=[], roles=[]):
+    def checkUser(self, path, message=None, types=[], roles=[], exception=UziException):
         cert = self.readCert(path)
         user = UziPassUser(self.succ, cert)
-        with self.assertRaises(exceptions.UziException, msg=message):
+        with self.assertRaises(exception, msg=message):
             validator = UziPassValidator(True, types, roles)
             validator.validate(user)
 
     def test_empty_user(self):
         validator = UziPassValidator(True, [], [])
-        with self.assertRaises(exceptions.UziException, msg="Empty User Provided"):
+        with self.assertRaises(UziException, msg="Empty User Provided"):
             validator.validate(None)
 
     def test_validate_incorrect_oid(self):
@@ -38,31 +44,35 @@ class TestUziValidator(unittest.TestCase):
         user = UziPassUser(self.succ, cert)
         validator = UziPassValidator(True, [], [])
         user["OidCa"] = "1.2.3.4"
-        with self.assertRaises(exceptions.UziException, msg="Empty User Provided"):
+        with self.assertRaises(UziCaException, msg="CA OID not UZI register Care Provider or named employee"):
             validator.validate(user)
 
     def test_strict_ca(self):
         self.checkUser(
             "mock-007-strict-ca-check.cert",
             "CA OID not UZI register Care Provider or named employee",
+            exception=UziCaException
         )
 
     def test_incorrect_version(self):
-        self.checkUser("mock-008-invalid-version.cert", "UZI version not 1")
+        self.checkUser("mock-008-invalid-version.cert", "UZI version not 1",
+            exception=UziVersionException)
 
     def test_not_allowed_type(self):
         self.checkUser(
             "mock-009-invalid-types.cert",
             "UZI card type not allowed",
             [UZI_TYPE_CARE_PROVIDER],
+            exception=UziAllowedTypeException
         )
 
     def test_not_allowed_role(self):
         self.checkUser(
             "mock-010-invalid-roles.cert",
             "UZI card role not allowed",
-            [UZI_TYPE_CARE_PROVIDER],
+            ["N"],
             [UZI_ROLE_NURSE],
+            exception=UziAllowedRoleException
         )
 
     def test_is_valid(self):
