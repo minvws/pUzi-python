@@ -44,26 +44,32 @@ class TestUziValidator(unittest.TestCase):
         user = UziPassUser(self.succ, cert)
         validator = UziPassValidator(True, [], [])
         user["OidCa"] = "1.2.3.4"
-        with self.assertRaises(UziCaException, msg="CA OID not UZI register Care Provider or named employee"):
+        with self.assertRaises(
+            UziCaException,
+            msg="CA OID not UZI register Care Provider or named employee",
+        ):
             validator.validate(user)
 
     def test_strict_ca(self):
         self.checkUser(
             "mock-007-strict-ca-check.cert",
             "CA OID not UZI register Care Provider or named employee",
-            exception=UziCaException
+            exception=UziCaException,
         )
 
     def test_incorrect_version(self):
-        self.checkUser("mock-008-invalid-version.cert", "UZI version not 1",
-            exception=UziVersionException)
+        self.checkUser(
+            "mock-008-invalid-version.cert",
+            "UZI version not 1",
+            exception=UziVersionException,
+        )
 
     def test_not_allowed_type(self):
         self.checkUser(
             "mock-009-invalid-types.cert",
             "UZI card type not allowed",
             [UZI_TYPE_CARE_PROVIDER],
-            exception=UziAllowedTypeException
+            exception=UziAllowedTypeException,
         )
 
     def test_not_allowed_role(self):
@@ -72,7 +78,7 @@ class TestUziValidator(unittest.TestCase):
             "UZI card role not allowed",
             ["N"],
             [UZI_ROLE_NURSE],
-            exception=UziAllowedRoleException
+            exception=UziAllowedRoleException,
         )
 
     def test_is_valid(self):
