@@ -1,7 +1,13 @@
 __author__ = "Rafael Dulfer <rafael.dulfer@gmail.com>"
 
 from uzireader.consts import OID_CA_CARE_PROVIDER, OID_CA_NAMED_EMPLOYEE
-from uzireader.exceptions import UziException
+from uzireader.exceptions import (
+    UziException,
+    UziCaException,
+    UziVersionException,
+    UziAllowedTypeException,
+    UziAllowedRoleException,
+)
 from uzireader.uzipassuser import UziPassUser
 
 
@@ -27,12 +33,12 @@ class UziPassValidator:
             and oidca != OID_CA_CARE_PROVIDER
             and oidca != OID_CA_NAMED_EMPLOYEE
         ):
-            raise UziException(
+            raise UziCaException(
                 "CA OID not UZI register Care Provider or named employee"
             )
         if user["UziVersion"] != "1":
-            raise UziException("UZI version not 1")
+            raise UziVersionException("UZI version not 1")
         if user["CardType"] not in self.allowed_types:
-            raise UziException("UZI card type not allowed")
+            raise UziAllowedTypeException("UZI card type not allowed")
         if user["Role"][:3] not in self.allowed_roles:
-            raise UziException("UZI card role not allowed")
+            raise UziAllowedRoleException("UZI card role not allowed")

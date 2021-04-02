@@ -3,7 +3,13 @@ __author__ = "Rafael Dulfer <rafael.dulfer@gmail.com>"
 
 import os
 import unittest
-import uzireader.exceptions as exceptions
+from uzireader.exceptions import (
+    UziCertificateNotUziException,
+    UziException,
+    UziExceptionServerConfigError,
+    UziExceptionClientCertError,
+    UziCertificateException,
+)
 from uzireader.uzipassuser import UziPassUser
 
 
@@ -18,40 +24,63 @@ class TestUziReader(unittest.TestCase):
         f.close()
         return cert
 
-    def checkCert(self, path, message=None):
+    def checkCert(self, path, message=None, exception=UziException):
         cert = self.readCert(path)
-        with self.assertRaises(exceptions.UziException, msg=message):
+        with self.assertRaises(exception, msg=message):
             UziPassUser(self.succ, cert)
 
     def test_check_request_has_no_cert(self):
-        with self.assertRaises(exceptions.UziExceptionServerConfigError):
+        with self.assertRaises(UziExceptionServerConfigError):
             UziPassUser()
 
     def test_check_ssl_client_failed(self):
-        with self.assertRaises(exceptions.UziExceptionServerConfigError):
-            UziPassUser()
+        with self.assertRaises(UziExceptionServerConfigError):
+            UziPassUser(verify="failed")
 
     def test_check_no_client_cert(self):
-        with self.assertRaises(exceptions.UziExceptionClientCertError):
+        with self.assertRaises(UziExceptionClientCertError):
             UziPassUser(self.succ)
 
     def test_check_cert_without_valid_data(self):
-        self.checkCert("mock-001-no-valid-uzi-data.cert", "No valid UZI data found")
+        self.checkCert(
+            "mock-001-no-valid-uzi-data.cert",
+            "No valid UZI data found",
+            UziCertificateNotUziException,
+        )
 
     def test_check_cert_with_invalid_san(self):
-        self.checkCert("mock-002-invalid-san.cert", "No valid UZI data found")
+        self.checkCert(
+            "mock-002-invalid-san.cert",
+            "No valid UZI data found",
+            UziCertificateNotUziException,
+        )
 
     def test_check_cert_with_invalid_other_name(self):
-        self.checkCert("mock-003-invalid-othername.cert", "No valid UZI data found")
+        self.checkCert(
+            "mock-003-invalid-othername.cert",
+            "No valid UZI data found",
+            UziCertificateNotUziException,
+        )
 
     def test_check_cert_without_ia5_string(self):
-        self.checkCert("mock-004-othername-without-ia5string.cert")
+        self.checkCert(
+            "mock-004-othername-without-ia5string.cert",
+            exception=UziCertificateException,
+        )
 
     def test_check_cert_incorrect_san_data(self):
-        self.checkCert("mock-005-incorrect-san-data.cert", "Incorrect SAN found")
+        self.checkCert(
+            "mock-005-incorrect-san-data.cert",
+            "Incorrect SAN found",
+            UziCertificateException,
+        )
 
     def test_check_cert_incorrect_san_data_2(self):
-        self.checkCert("mock-006-incorrect-san-data.cert", "Incorrect SAN found")
+        self.checkCert(
+            "mock-006-incorrect-san-data.cert",
+            "Incorrect SAN found",
+            UziCertificateException,
+        )
 
     def test_check_valid_cert(self):
         cert = self.readCert("mock-011-correct.cert")
