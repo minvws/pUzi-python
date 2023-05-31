@@ -52,6 +52,9 @@ class UziPassUser(dict):
         surName = None
         for sequence in rdnSequence:
             for attribute in sequence:
+                if attribute.oid._name == "commonName":
+                    return attribute.value
+
                 if attribute.oid._name == "surname":
                     surName = attribute.value
 
@@ -68,7 +71,13 @@ class UziPassUser(dict):
         if not self.cert.subject:
             raise UziCertificateException("No subject rdnSequence")
 
-        givenName, surName = self._getName(self.cert.subject.rdns)
+        names = self._getName(self.cert.subject.rdns)
+        givenName, surName, commonName = None, None, None
+
+        try:
+            givenName, surName = self._getName(self.cert.subject.rdns)
+        except ValueError:
+            commonName = self._getName(self.cert.subject.rdns)
 
         for extension in self.cert.extensions:
             if extension.oid._name != "subjectAltName":
@@ -105,6 +114,7 @@ class UziPassUser(dict):
                 return {
                     "givenName": givenName,
                     "surName": surName,
+                    "commonName": commonName,
                     "OidCa": data[0],
                     "UziVersion": data[1],
                     "UziNumber": data[2],
