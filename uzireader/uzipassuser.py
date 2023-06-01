@@ -71,7 +71,6 @@ class UziPassUser(dict):
         if not self.cert.subject:
             raise UziCertificateException("No subject rdnSequence")
 
-        names = self._getName(self.cert.subject.rdns)
         givenName, surName, commonName = None, None, None
 
         try:
