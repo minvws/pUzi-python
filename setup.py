@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 __version__ = "0.0.1"
 
 requirements = [
-    "cryptography",
+    "cryptography>3",
 ]
 
 setup(
