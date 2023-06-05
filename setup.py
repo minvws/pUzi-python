@@ -20,8 +20,7 @@ setup(
         "Programming Language :: Python :: 3.6",
     ],
     packages=find_packages(),
-    package_dir={"app": "app"},
-    package_data={"app": ["templates/saml/html/*.html"]},
+    package_dir={"uzireader": "uzireader"},
     url="https://github.com/minvws/pUzi-python",
     install_requires=requirements,
     extras_require={
