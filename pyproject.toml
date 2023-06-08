@@ -5,7 +5,6 @@ version = "0.1.0"
 author="Jan Klopper"
 author_email="jan@underdark.nl"
 keywords="Uzipas, pUzi"
-license="European Union Public Licence 1.2 (EUPL 1.2)"
 classifiers=[
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
