@@ -7,5 +7,6 @@ version = "0.1.0"
 requires = [
     "cryptography>=3.1",
     "setuptools>=40.8.0",
-    "wheel"
+    "wheel",
 ]
+build-backend = "setuptools.build_meta"
