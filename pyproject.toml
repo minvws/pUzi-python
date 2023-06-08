@@ -2,8 +2,6 @@
 name = "pUzi"
 description = "Python 3 UZI card reader lib"
 version = "0.1.0"
-author="Jan Klopper"
-author_email="jan@underdark.nl"
 keywords=["Uzipas", "pUzi"]
 classifiers=[
     "Development Status :: 4 - Beta",
