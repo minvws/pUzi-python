@@ -1,4 +1,28 @@
+[project]
+name = "pUzi"
+authors = [
+  { name="Jan Klopper", email="jan@underdark.nl" },
+]
+description = "Python 3 UZI card reader lib"
+version = "0.1.0"
+keywords=["Uzipas", "pUzi"]
+classifiers=[
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.6",
+]
+requires-python=">=3.6"
+
+[project.urls]
+Repository="https://github.com/minvws/pUzi-python"
+
 [build-system]
 requires = [
-    "cryptography>=3.1"
+    "cryptography>=3.1",
+    "setuptools>=40.8.0",
+    "wheel",
 ]
+build-backend = "setuptools.build_meta"
