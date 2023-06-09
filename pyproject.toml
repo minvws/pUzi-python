@@ -1,5 +1,8 @@
 [project]
 name = "pUzi"
+authors = [
+  { name="Jan Klopper", email="jan@underdark.nl" },
+]
 description = "Python 3 UZI card reader lib"
 version = "0.1.0"
 keywords=["Uzipas", "pUzi"]
