@@ -108,7 +108,8 @@ class UziPassUser(dict):
                 if '=' in data[0]:
                     # To remove the \x16= prefix from the OidCa, for example \x16=2.16.528.1.1007.99.217
                     data[0] = data[0].split("=", 1)[1]
-                data[0] = data[0].split("?", 1)[1]
+                elif '?' in data[0]:
+                    data[0] = data[0].split("?", 1)[1]
 
                 return {
                     "givenName": givenName,
