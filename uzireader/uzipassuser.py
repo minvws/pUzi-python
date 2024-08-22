@@ -1,7 +1,4 @@
 #!/usr/bin/python3
-__author__ = "Jan Klopper <jan@underdark.nl>"
-__version__ = "1.1"
-
 from cryptography import x509
 from uzireader.exceptions import (
     UziException,
@@ -11,9 +8,10 @@ from uzireader.exceptions import (
     UziCertificateNotUziException,
 )
 from uzireader.consts import OID_IA5STRING
+from uzireader.uzi import Uzi
 
 
-class UziPassUser(dict):
+class UziPassUser(Uzi):
     """UziPassUser dict like object with the following keys:
 
     givenName: givenName,
@@ -37,24 +35,27 @@ class UziPassUser(dict):
         -  SSL_CLIENT_VERIFY
         -  SSL_CLIENT_CERT
         """
-        if verify != "SUCCESS":
-            raise UziExceptionServerConfigError(
-                "Webserver client cert check not passed"
-            )
-        if not cert:
-            raise UziExceptionClientCertError("No client certificate presented")
-        self.cert = x509.load_pem_x509_certificate(bytes(cert.encode("ascii")))
-        self.update(self._getData())
+        super().__init__(verify, cert)
+        if self.get('CardType') not in ["Z", "N", "M"]:
+            raise UziCertificateException("Uzi CardType is not User (Z/N/M)")
 
-    def _getName(self, rdnSequence):
+        givenName, surName, commonName = None, None, None
+        try:
+            givenName, surName = self._getUserNames(self.cert.subject.rdns)
+        except ValueError:
+            # fallback to commonName
+            commonName = self["commonName"]
+
+        self["givenName"] = givenName
+        self["surName"] = surName
+        self["commonName"] = commonName
+
+    def _getUserNames(self, rdnSequence):
         """Finds and returns the surName, and givenName"""
         givenName = None
         surName = None
         for sequence in rdnSequence:
             for attribute in sequence:
-                if attribute.oid._name == "commonName":
-                    return attribute.value
-
                 if attribute.oid._name == "surname":
                     surName = attribute.value
 
@@ -64,63 +65,3 @@ class UziPassUser(dict):
                 if givenName and surName:
                     return (givenName, surName)
         raise UziException("No surname / givenName found.")
-
-    def _getData(self):
-        """Attemps to parse the presented certificate and extract the user info
-        from it"""
-        if not self.cert.subject:
-            raise UziCertificateException("No subject rdnSequence")
-
-        givenName, surName, commonName = None, None, None
-
-        try:
-            givenName, surName = self._getName(self.cert.subject.rdns)
-        except ValueError:
-            commonName = self._getName(self.cert.subject.rdns)
-
-        for extension in self.cert.extensions:
-            if extension.oid._name != "subjectAltName":
-                continue
-
-            for value in extension.value:
-                if (
-                    type(value) != x509.general_name.OtherName
-                    or value.type_id.dotted_string != OID_IA5STRING
-                ):
-                    continue
-
-                subjectAltName = value.value.decode("ascii")
-
-                # Reference page 60
-                #
-                # [0] OID CA
-                # [1] UZI Version
-                # [2] UZI number
-                # [3] Card type
-                # [4] Subscriber number
-                # [5] Role (reference page 89)
-                # [6] AGB code
-
-                data = subjectAltName.split("-")
-                if len(data) < 6:
-                    raise UziCertificateException("Incorrect SAN found")
-
-                if '=' in data[0]:
-                    # To remove the \x16= prefix from the OidCa, for example \x16=2.16.528.1.1007.99.217
-                    data[0] = data[0].split("=", 1)[1]
-                elif '?' in data[0]:
-                    data[0] = data[0].split("?", 1)[1]
-
-                return {
-                    "givenName": givenName,
-                    "surName": surName,
-                    "commonName": commonName,
-                    "OidCa": data[0],
-                    "UziVersion": data[1],
-                    "UziNumber": data[2],
-                    "CardType": data[3],
-                    "SubscriberNumber": data[4],
-                    "Role": data[5],
-                    "AgbCode": data[6],
-                }
-        raise UziCertificateNotUziException("No valid UZI data found")

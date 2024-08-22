@@ -8,7 +8,7 @@ from uzireader.exceptions import (
     UziAllowedTypeException,
     UziAllowedRoleException,
 )
-from uzireader.uzipassuser import UziPassUser
+from uzireader.uzi import Uzi
 
 
 class UziPassValidator:
@@ -17,14 +17,14 @@ class UziPassValidator:
         self.allowed_types = allowed_types
         self.allowed_roles = allowed_roles
 
-    def is_valid(self, user: UziPassUser):
+    def is_valid(self, user: Uzi):
         try:
             self.validate(user)
         except UziException:
             return False
         return True
 
-    def validate(self, user: UziPassUser):
+    def validate(self, user: Uzi):
         if user is None:
             raise UziException("Empty User Provided")
         oidca = user["OidCa"]
