@@ -11,7 +11,7 @@ from uzireader.exceptions import (
     UziAllowedTypeException,
     UziAllowedRoleException,
 )
-from uzireader.uzipassuser import UziPassUser
+from uzireader.uzi import Uzi
 from uzireader.uzipassvalidator import UziPassValidator
 from uzireader.consts import UZI_TYPE_CARE_PROVIDER, UZI_ROLE_NURSE, UZI_ROLE_DENTIST
 
@@ -29,7 +29,7 @@ class TestUziValidator(unittest.TestCase):
 
     def checkUser(self, path, message=None, types=[], roles=[], exception=UziException):
         cert = self.readCert(path)
-        user = UziPassUser(self.succ, cert)
+        user = Uzi(self.succ, cert)
         with self.assertRaises(exception, msg=message):
             validator = UziPassValidator(True, types, roles)
             validator.validate(user)
@@ -41,7 +41,7 @@ class TestUziValidator(unittest.TestCase):
 
     def test_validate_incorrect_oid(self):
         cert = self.readCert("mock-011-correct.cert")
-        user = UziPassUser(self.succ, cert)
+        user = Uzi(self.succ, cert)
         validator = UziPassValidator(True, [], [])
         user["OidCa"] = "1.2.3.4"
         with self.assertRaises(
@@ -83,7 +83,7 @@ class TestUziValidator(unittest.TestCase):
 
     def test_is_valid(self):
         cert = self.readCert("mock-011-correct.cert")
-        user = UziPassUser(self.succ, cert)
+        user = Uzi(self.succ, cert)
         user["CardType"] = UZI_TYPE_CARE_PROVIDER
         user["Role"] = UZI_ROLE_DENTIST
         validator = UziPassValidator(True, [UZI_TYPE_CARE_PROVIDER], [UZI_ROLE_DENTIST])
