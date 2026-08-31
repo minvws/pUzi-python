@@ -1,1 +1,3 @@
-* @minvws/brba-python-codeowners
+* @minvws/icore-codeowners-python
+# Last match takes precedence
+.github/CODEOWNERS @minvws/irealisatie-operations
